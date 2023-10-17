@@ -1,8 +1,15 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-export class User {
+@Entity('user')
+export class UserEntity {
+  @PrimaryColumn()
   uuid: string;
+
+  @Column()
   username: string;
+
+  @Column()
   email: string;
 }
 
