@@ -3,7 +3,7 @@ import { UuidService } from './uuid/uuid.service';
 
 @Global()
 @Module({
-    providers: [UuidService],
-    exports: [UuidService]
+  providers: [UuidService],
+  exports: [UuidService],
 })
 export class CommonModuleModule {}
