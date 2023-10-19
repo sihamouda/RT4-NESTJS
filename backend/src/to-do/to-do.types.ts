@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, MaxLength, MinLength } from '@nestjs/class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -32,8 +32,17 @@ export class TodoEntity {
 
 export class TodoDTO {
   @IsNotEmpty()
+  @MinLength(3, {
+    message: 'Name is too short',
+  })
+  @MaxLength(10, {
+    message: 'Name is too long',
+  })
   name: string;
   @IsNotEmpty()
+  @MinLength(10, {
+    message: 'Description is too short',
+  })
   description: string;
   @IsNotEmpty()
   status: StatusEnum;
