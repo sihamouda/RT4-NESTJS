@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsNotEmpty } from 'class-validator';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 enum StatusEnum {
   Todo,
@@ -17,9 +23,18 @@ export class TodoEntity {
   @Column()
   description: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
   @Column()
+  status: StatusEnum;
+}
+
+export class TodoDTO {
+  @IsNotEmpty()
+  name: string;
+  @IsNotEmpty()
+  description: string;
+  @IsNotEmpty()
   status: StatusEnum;
 }
