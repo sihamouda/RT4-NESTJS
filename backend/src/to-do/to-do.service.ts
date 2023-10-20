@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  StatusEnum,
-  TodoDTOForCreating,
-  TodoDTOForUpdating,
-  TodoEntity,
-} from './to-do.types';
+import { TodoEntity } from './to-do.entity';
+import { TodoDTOForCreating, TodoDTOForUpdating } from './to-do.dto';
+import { StatusEnum } from './to-do.enum';
 
 @Injectable()
 export class TodoService {

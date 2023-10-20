@@ -9,11 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { TodoService } from './to-do.service';
-import {
-  StatusEnum,
-  TodoDTOForCreating,
-  TodoDTOForUpdating,
-} from './to-do.types';
+import { StatusEnum } from './to-do.enum';
+import { TodoDTOForCreating, TodoDTOForUpdating } from './to-do.dto';
 
 @Controller('todo')
 export class TodoController {

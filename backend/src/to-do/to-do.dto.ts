@@ -1,44 +1,7 @@
 import { IsNotEmpty, MaxLength, MinLength } from '@nestjs/class-validator';
 import { Optional } from '@nestjs/common';
-import { lengthError } from 'src/common-module/dtoError/dtoError.service';
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-
-export enum StatusEnum {
-  Todo = 'todo',
-  InProgress = 'inprogress',
-  Complete = 'complete',
-}
-
-@Entity()
-export class TodoEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ unique: true })
-  name: string;
-
-  @Column()
-  description: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
-
-  @Column()
-  status: StatusEnum;
-}
+import { lengthError } from 'src/common-module/dtoErrorHandler/dtoError.service';
+import { StatusEnum } from './to-do.enum';
 
 export class TodoDTOForCreating {
   @IsNotEmpty()
