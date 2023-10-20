@@ -27,6 +27,15 @@ export class TodoController {
     return this.todoService.getTodoByCondition(status, name, description);
   }
 
+  // pagination
+  @Get('/paginate')
+  getPage(
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 2,
+  ) {
+    return this.todoService.getTodosPaginated(page, pageSize);
+  }
+
   @Get(':id')
   getTodoById(@Param('id') idTodo: number) {
     return this.todoService.getTodoById(idTodo);

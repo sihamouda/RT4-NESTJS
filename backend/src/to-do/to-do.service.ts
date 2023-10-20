@@ -48,4 +48,17 @@ export class TodoService {
   getTodoByCondition(status: StatusEnum, name: string, description: string) {
     return this.todoRepository.findAndCountBy({ status, name, description });
   }
+
+  async getTodosPaginated(page: number, pageSize: number) {
+    const offset = (page - 1) * pageSize;
+
+    const queryBuilder = this.todoRepository.createQueryBuilder('todo');
+    const todos = await queryBuilder
+      .select()
+      .skip(offset)
+      .take(pageSize)
+      .getMany();
+
+    return todos;
+  }
 }
