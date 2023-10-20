@@ -13,11 +13,11 @@ export class TodoService {
   ) {}
 
   // Basic CRUD
-  findTodos() {
+  getTodos() {
     return this.todoRepository.find();
   }
 
-  findTodoById(idTodo: number) {
+  getTodoById(idTodo: number) {
     return this.todoRepository.findBy({ id: idTodo });
   }
 
@@ -45,7 +45,7 @@ export class TodoService {
   //   return this.todoRepository.findAndCountBy({ status });
   // }
 
-  findTodoByCondition(status: StatusEnum, name: string, description: string) {
+  getTodoByCondition(status: StatusEnum, name: string, description: string) {
     return this.todoRepository.findAndCountBy({ status, name, description });
   }
 }

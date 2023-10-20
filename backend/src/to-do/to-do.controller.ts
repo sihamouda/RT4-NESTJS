@@ -22,14 +22,14 @@ export class TodoController {
     @Query('status') status: StatusEnum,
   ) {
     if (status == undefined && name == undefined && description == undefined) {
-      return this.todoService.findTodos();
+      return this.todoService.getTodos();
     }
-    return this.todoService.findTodoByCondition(status, name, description);
+    return this.todoService.getTodoByCondition(status, name, description);
   }
 
   @Get(':id')
   getTodoById(@Param('id') idTodo: number) {
-    return this.todoService.findTodoById(idTodo);
+    return this.todoService.getTodoById(idTodo);
   }
 
   @Post()
