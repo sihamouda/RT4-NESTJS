@@ -1,9 +1,9 @@
-import { CommonEntity } from 'src/common-module/CommunEntity/CommunEntity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { StatusEnum } from './to-do.enum';
+import { CommonAbstractEntity } from 'src/common-module/CommunAbstractEntity/CommunAbstractEntity';
 
 @Entity('todo')
-export class TodoEntity extends CommonEntity {
+export class TodoEntity extends CommonAbstractEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -13,6 +13,10 @@ export class TodoEntity extends CommonEntity {
   @Column()
   description: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: StatusEnum,
+    default: StatusEnum.TODO,
+  })
   status: StatusEnum;
 }

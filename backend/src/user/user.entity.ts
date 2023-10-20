@@ -1,8 +1,8 @@
-import { CommonEntity } from 'src/common-module/CommunEntity/CommunEntity';
+import { CommonAbstractEntity } from 'src/common-module/CommunAbstractEntity/CommunAbstractEntity';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('user')
-export class UserEntity extends CommonEntity {
+export class UserEntity extends CommonAbstractEntity {
   @PrimaryColumn()
   uuid: string;
 
