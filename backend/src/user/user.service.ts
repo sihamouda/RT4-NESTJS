@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
-import { UuidService } from 'src/common-module/uuid/uuid.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO } from './user.dto';
@@ -8,7 +7,7 @@ import { UserDTO } from './user.dto';
 @Injectable()
 export class UserService {
   constructor(
-    private uuidService: UuidService,
+    @Inject('UUID_PROVIDER') private uuidProvider,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
@@ -17,7 +16,7 @@ export class UserService {
   }
   createUser(userDTO: UserDTO) {
     const newUser = this.userRepository.create({
-      uuid: this.uuidService.generateUuid(),
+      uuid: this.uuidProvider(),
       ...userDTO,
     } as UserEntity);
 

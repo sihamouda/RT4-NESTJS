@@ -40,11 +40,6 @@ export class TodoService {
     return this.todoRepository.softDelete({ id: idTodo });
   }
 
-  // By status
-  // findTodoByStatus(status: StatusEnum) {
-  //   return this.todoRepository.findAndCountBy({ status });
-  // }
-
   getTodoByCondition(status: StatusEnum, name: string, description: string) {
     return this.todoRepository.findAndCountBy({ status, name, description });
   }
