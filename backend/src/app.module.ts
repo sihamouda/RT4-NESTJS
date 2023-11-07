@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModuleModule } from './common-module/common-module.module';
-import { UuidService } from './common-module/uuid/uuid.provider';
 import { UserModule } from './user/user.module';
 import { ToDoModule } from './to-do/to-do.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -24,6 +23,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, UuidService],
+  providers: [AppService],
 })
 export class AppModule {}

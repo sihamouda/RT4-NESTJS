@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { TodoEntity } from './to-do.entity';
 import { TodoDTOForCreating, TodoDTOForUpdating } from './to-do.dto';
 import { StatusEnum } from './to-do.enum';
@@ -40,12 +40,24 @@ export class TodoService {
     return this.todoRepository.softDelete({ id: idTodo });
   }
 
-  getTodoByCondition(status: StatusEnum, name: string, description: string) {
-    return this.todoRepository.findAndCountBy({ status, name, description });
+  getTodoByName(status: StatusEnum, name: string) {
+    return this.todoRepository.findBy({ status, name: Like(`%${name}%`) });
+  }
+
+  getTodoByDescription(status: StatusEnum, description: string) {
+    return this.todoRepository.findAndCountBy({
+      status,
+      description: Like(`%${description}%`),
+    });
   }
 
   async getTodosPaginated(page: number, pageSize: number) {
     const offset = (page - 1) * pageSize;
+
+    return this.todoRepository.find({
+      skip: offset,
+      take: pageSize,
+    });
 
     const queryBuilder = this.todoRepository.createQueryBuilder('todo');
     const todos = await queryBuilder

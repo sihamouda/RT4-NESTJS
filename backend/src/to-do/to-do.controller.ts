@@ -24,7 +24,14 @@ export class TodoController {
     if (status == undefined && name == undefined && description == undefined) {
       return this.todoService.getTodos();
     }
-    return this.todoService.getTodoByCondition(status, name, description);
+    if (status) {
+      if (name && description == undefined) {
+        return this.todoService.getTodoByName(status, name);
+      }
+      if (name == undefined && description) {
+        return this.todoService.getTodoByDescription(status, description);
+      }
+    }
   }
 
   // pagination
