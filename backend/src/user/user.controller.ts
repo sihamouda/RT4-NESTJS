@@ -2,7 +2,10 @@ import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDTO } from './user.dto';
 
-@Controller('user')
+@Controller({
+  path: 'user',
+  version: '1',
+})
 export class UserController {
   constructor(private userService: UserService) {}
   @Get()

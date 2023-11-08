@@ -10,9 +10,12 @@ import {
 } from '@nestjs/common';
 import { TodoService } from './to-do.service';
 import { StatusEnum } from './to-do.enum';
-import { TodoDTOForCreating, TodoDTOForUpdating } from './to-do.dto';
+import { TodoDTO, TodoDTOForUpdating } from './to-do.dto';
 
-@Controller('todo')
+@Controller({
+  path: 'to-dos',
+  version: '1',
+})
 export class TodoController {
   constructor(private todoService: TodoService) {}
   @Get()
@@ -20,36 +23,37 @@ export class TodoController {
     @Query('name') name: string,
     @Query('description') description: string,
     @Query('status') status: StatusEnum,
+    @Query('offset') offset: number = 0,
+    @Query('limit') limit: number = 2,
   ) {
     if (status == undefined && name == undefined && description == undefined) {
-      return this.todoService.getTodos();
+      return this.todoService.getTodos({ offset, limit });
     }
     if (status) {
       if (name && description == undefined) {
-        return this.todoService.getTodoByName(status, name);
+        return this.todoService.getTodoByCondition(status, 'name', name, {
+          offset,
+          limit,
+        });
       }
       if (name == undefined && description) {
-        return this.todoService.getTodoByDescription(status, description);
+        return this.todoService.getTodoByCondition(
+          status,
+          'description',
+          description,
+          { offset, limit },
+        );
       }
     }
-  }
-
-  // pagination
-  @Get('/paginate')
-  getPage(
-    @Query('page') page: number = 1,
-    @Query('pageSize') pageSize: number = 2,
-  ) {
-    return this.todoService.getTodosPaginated(page, pageSize);
   }
 
   @Get(':id')
   getTodoById(@Param('id') idTodo: number) {
-    return this.todoService.getTodoById(idTodo);
+    return this.todoService.getTodoById(idTodo, undefined);
   }
 
   @Post()
-  postTodo(@Body() todoDTO: TodoDTOForCreating) {
+  postTodo(@Body() todoDTO: TodoDTO) {
     return this.todoService.createTodo(todoDTO);
   }
 
