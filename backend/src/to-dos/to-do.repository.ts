@@ -1,8 +1,10 @@
 import { DataSource, Repository, SelectQueryBuilder } from 'typeorm';
-import { TODO_TABLE_NAME, TodoEntity } from './to-do.entity';
+import { TodoEntity } from './to-do.entity';
 import { StatusEnum } from './to-do.enum';
 import { PaginationOptions } from './to-do.types';
 import { Injectable } from '@nestjs/common';
+// import { TODO_TABLE_NAME } from 'src/common-module/constants/constants';
+import { TodoUptateDTO } from './to-do.dto';
 
 @Injectable()
 export class TodoRepository extends Repository<TodoEntity> {
@@ -36,7 +38,7 @@ export class TodoRepository extends Repository<TodoEntity> {
   getTodoById(id: number, paginationOptions: PaginationOptions) {
     const todoById = this.createQueryBuilder()
       .select()
-      .where(`${TODO_TABLE_NAME}.id = :id`, { id });
+      .where(`id = :id`, { id });
     return this.handlePaginationForQueryBuilderSelection(
       todoById,
       paginationOptions,
@@ -51,13 +53,39 @@ export class TodoRepository extends Repository<TodoEntity> {
   ) {
     const todoByCondition = this.createQueryBuilder()
       .select()
-      .where(
-        `${TODO_TABLE_NAME}.status = :status AND ${TODO_TABLE_NAME}.${condition} = :${condition}`,
-        { status, [condition]: conditionValue },
-      );
+      .where(`status = :status AND ${condition} = :${condition}`, {
+        status,
+        [condition]: conditionValue,
+      });
     return this.handlePaginationForQueryBuilderSelection(
       todoByCondition,
       paginationOptions,
     );
+  }
+
+  async updateTodo(id: number, todoUpdateDTO: TodoUptateDTO) {
+    const currentTodo = await this.createQueryBuilder()
+      .select()
+      .where(`id = :id AND userId = :userId`, {
+        id,
+        userId: todoUpdateDTO.userId,
+      })
+      .getOne();
+    if (currentTodo === null) {
+      throw new Error('unautherized');
+    }
+    const updatedTodo = { ...currentTodo, ...todoUpdateDTO };
+    return this.save(updatedTodo);
+  }
+
+  async deleteTodo(id: number, userId: string) {
+    const currentTodo = await this.createQueryBuilder()
+      .select()
+      .where(`id = :id AND userId = :userId`, { id, userId })
+      .getOne();
+    if (currentTodo === null) {
+      throw new Error('unautherized');
+    }
+    return this.softDelete({ id });
   }
 }

@@ -1,7 +1,8 @@
 import { CommonAbstractEntity } from 'src/common-module/CommunAbstractEntity/CommunAbstractEntity';
+import { USER_TABLE_NAME } from 'src/common-module/constants/constants';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('user')
+@Entity(USER_TABLE_NAME)
 export class UserEntity extends CommonAbstractEntity {
   @PrimaryColumn()
   uuid: string;
@@ -11,4 +12,7 @@ export class UserEntity extends CommonAbstractEntity {
 
   @Column()
   email: string;
+
+  @Column()
+  password: string;
 }

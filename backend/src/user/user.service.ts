@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserDTO } from './user.dto';
+import { UserSignUpDTO } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -14,12 +14,22 @@ export class UserService {
   findUsers() {
     return this.userRepository.find();
   }
-  createUser(userDTO: UserDTO) {
+  signUpUser(userSignUpDTO: UserSignUpDTO) {
     const newUser = this.userRepository.create({
       uuid: this.uuidProvider(),
-      ...userDTO,
+      ...userSignUpDTO,
     } as UserEntity);
 
     return this.userRepository.save(newUser);
   }
+
+  // signInUser(userSignInDTO: UserSignInDTO) {
+  //   console.log(userSignInDTO.access_token);
+  //   this.userRepository.find({
+  //     where: {
+  //       username: userSignInDTO.username,
+  //       password: userSignInDTO.password,
+  //     },
+  //   });
+  // }
 }

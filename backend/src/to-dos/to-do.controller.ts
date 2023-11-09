@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { TodoService } from './to-do.service';
 import { StatusEnum } from './to-do.enum';
-import { TodoDTO, TodoDTOForUpdating } from './to-do.dto';
+import { TodoDTO, TodoDeleteDto, TodoUptateDTO } from './to-do.dto';
 
 @Controller({
   path: 'to-dos',
@@ -58,12 +58,12 @@ export class TodoController {
   }
 
   @Patch(':id')
-  patchTodo(@Param('id') idTodo: number, @Body() todoDTO: TodoDTOForUpdating) {
+  patchTodo(@Param('id') idTodo: number, @Body() todoDTO: TodoUptateDTO) {
     return this.todoService.updateTodo(idTodo, todoDTO);
   }
 
   @Delete(':id')
-  deleteTodo(@Param('id') idTodo: number) {
-    return this.todoService.deleteTodo(idTodo);
+  deleteTodo(@Param('id') idTodo: number, @Body() todoDTO: TodoDeleteDto) {
+    return this.todoService.deleteTodo(idTodo, todoDTO.userId);
   }
 }

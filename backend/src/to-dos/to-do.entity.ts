@@ -1,8 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { StatusEnum } from './to-do.enum';
 import { CommonAbstractEntity } from 'src/common-module/CommunAbstractEntity/CommunAbstractEntity';
-
-export const TODO_TABLE_NAME = 'todo';
+import { TODO_TABLE_NAME } from 'src/common-module/constants/constants';
 
 @Entity(TODO_TABLE_NAME)
 export class TodoEntity extends CommonAbstractEntity {
@@ -21,4 +20,7 @@ export class TodoEntity extends CommonAbstractEntity {
     default: StatusEnum.TODO,
   })
   status: StatusEnum;
+
+  @Column()
+  userId: string;
 }

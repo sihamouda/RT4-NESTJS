@@ -1,6 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 
-import { TodoDTO, TodoDTOForUpdating } from './to-do.dto';
+import { TodoDTO, TodoUptateDTO } from './to-do.dto';
 import { StatusEnum } from './to-do.enum';
 import { TodoRepository } from './to-do.repository';
 import { PaginationOptions } from './to-do.types';
@@ -23,17 +27,28 @@ export class TodoService {
     return this.todoRepository.save(newTodo);
   }
 
-  updateTodo(idTodo: number, todoDTO: TodoDTOForUpdating) {
-    return this.todoRepository.update(
-      { id: idTodo },
-      {
-        ...todoDTO,
-      },
-    );
+  async updateTodo(id: number, todoDTO: TodoUptateDTO) {
+    try {
+      return await this.todoRepository.updateTodo(id, todoDTO);
+    } catch (e) {
+      if (e.message === 'unautherized') {
+        throw new UnauthorizedException();
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 
-  deleteTodo(idTodo: number) {
-    return this.todoRepository.softDelete({ id: idTodo });
+  async deleteTodo(id: number, userId: string) {
+    try {
+      return await this.todoRepository.deleteTodo(id, userId);
+    } catch (e) {
+      if (e.message === 'unautherized') {
+        throw new UnauthorizedException();
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 
   getTodoByCondition(
